@@ -1,4 +1,4 @@
-package com.zzd.authdemo.service;
+package com.zzd.authdemo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.zzd.authdemo.dao.UserMapper;
