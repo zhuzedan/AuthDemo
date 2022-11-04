@@ -5,6 +5,8 @@ import com.zzd.authdemo.domain.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -17,6 +19,18 @@ class AuthDemoApplicationTests {
     void contextLoads() {
         List<User> users = userMapper.selectList(null);
         System.out.println(users.get(0));
+    }
+    @Autowired
+    PasswordEncoder passwordEncoder;
+    @Test
+    public void bCrypt() {
+        String ydlclass1 = passwordEncoder.encode("ydlclass");
+        String ydlclass2 = passwordEncoder.encode("ydlclass");
+        System.out.println(ydlclass1);
+        System.out.println(ydlclass2);
+
+        boolean ydlclass = passwordEncoder.matches("ydlclass", ydlclass1);
+        System.out.println(ydlclass);
     }
 
 }
