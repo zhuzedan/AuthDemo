@@ -1,11 +1,14 @@
 package com.zzd.authdemo.config;
 
 import com.zzd.authdemo.filter.JwtAuthenticationTokenFilter;
+import com.zzd.authdemo.handler.AccessDeniedHandlerImpl;
+import com.zzd.authdemo.handler.AuthenticationEntryPointImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -26,6 +29,10 @@ public class SecurityConfig{
     }
     @Autowired
     JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+    @Autowired
+    AuthenticationEntryPointImpl authenticationEntryPoint;
+    @Autowired
+    AccessDeniedHandlerImpl accessDeniedHandler;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -42,7 +49,8 @@ public class SecurityConfig{
 
         //把token校验过滤器添加到过滤器链中
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
-
+        //高速security如何处理异常
+        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler);
         return http.build();
     }
     //放行
