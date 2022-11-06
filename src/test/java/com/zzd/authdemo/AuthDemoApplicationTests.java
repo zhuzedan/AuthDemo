@@ -1,5 +1,6 @@
 package com.zzd.authdemo;
 
+import com.zzd.authdemo.dao.MenuMapper;
 import com.zzd.authdemo.dao.UserMapper;
 import com.zzd.authdemo.domain.User;
 import org.junit.jupiter.api.Test;
@@ -31,6 +32,13 @@ class AuthDemoApplicationTests {
 
         boolean ydlclass = passwordEncoder.matches("ydlclass", ydlclass1);
         System.out.println(ydlclass);
+    }
+    @Autowired
+    MenuMapper menuMapper;
+    @Test
+    public void testSelectPermsByUserId() {
+        List<String> strings = menuMapper.selectPermsByUserId(1L);
+        System.out.println(strings);
     }
 
 }

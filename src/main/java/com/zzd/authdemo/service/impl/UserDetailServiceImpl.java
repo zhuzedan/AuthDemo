@@ -1,6 +1,7 @@
 package com.zzd.authdemo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.zzd.authdemo.dao.MenuMapper;
 import com.zzd.authdemo.dao.UserMapper;
 import com.zzd.authdemo.domain.LoginUser;
 import com.zzd.authdemo.domain.User;
@@ -23,6 +24,8 @@ import java.util.Objects;
 public class UserDetailServiceImpl implements UserDetailsService {
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    MenuMapper menuMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -33,11 +36,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
         if (Objects.isNull(user)) {
             throw new RuntimeException("用户名错误！");
         }
-        //TODO 权限信息
-        List<String> list = new ArrayList<>(Arrays.asList("hello","delgoods"));
-
+        // //TODO 权限信息 假数据
+        // List<String> list = new ArrayList<>(Arrays.asList("hello","delgoods"));
+        List<String> perms = menuMapper.selectPermsByUserId(user.getId());
         //返回userdetails
 
-        return new LoginUser(user,list);
+        return new LoginUser(user,perms);
     }
 }
