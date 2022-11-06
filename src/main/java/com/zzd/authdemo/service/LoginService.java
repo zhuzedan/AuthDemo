@@ -9,4 +9,7 @@ import com.zzd.authdemo.domain.User;
  */
 public interface LoginService {
     public ResponseResult login(User user);
+
+    ResponseResult logout();
+
 }
