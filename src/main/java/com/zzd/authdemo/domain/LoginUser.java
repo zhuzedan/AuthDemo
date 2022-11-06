@@ -1,12 +1,17 @@
 package com.zzd.authdemo.domain;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author :zzd
@@ -17,9 +22,28 @@ import java.util.Collection;
 @AllArgsConstructor
 public class LoginUser implements UserDetails {
     private User user;
+
+    List<String> permissions;
+    @JSONField(serialize = false)
+    List<SimpleGrantedAuthority> authorities;
+
+    public LoginUser(User user, List<String> permissions) {
+        this.user = user;
+        this.permissions = permissions;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        List<SimpleGrantedAuthority> list = new ArrayList<>();
+        // for (String permission : permissions) {
+        //     SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(permission);
+        //     list.add(simpleGrantedAuthority);
+        // }
+        if (authorities!=null) {
+            return authorities;
+        }
+        authorities = permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return authorities;
     }
 
     @Override
