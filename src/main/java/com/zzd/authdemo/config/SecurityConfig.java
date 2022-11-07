@@ -51,6 +51,8 @@ public class SecurityConfig{
         http.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         //高速security如何处理异常
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint).accessDeniedHandler(accessDeniedHandler);
+        //允许跨域
+        http.cors();
         return http.build();
     }
     //放行
